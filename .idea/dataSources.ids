@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - payments_db@localhost" uuid="868d164f-c1bb-4ec4-b194-7df3160e4374">
+    <database-info product="MySQL" version="5.5.46-0ubuntu0.14.04.2" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.38 ( Revision: fe541c166cec739c74cc727c5da96c1028b4834a )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
+    <schema name="" catalog="payments_db"/>
+    <table name="account" schema="" catalog="payments_db" type="TABLE">
+      <column name="idaccount" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="client_idclient" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="currency" sqlType="VARCHAR" precision="7" scale="0" nullable="false" jdbcType="12"/>
+      <column name="amount" sqlType="DECIMAL" precision="12" scale="2" nullable="false" jdbcType="3"/>
+      <column name="is_blocked" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <primary-key name="PRIMARY" columns="idaccount"/>
+      <foreign-key name="fk_account_client" columns="client_idclient" ref-table="client" ref-schema="" ref-catalog="payments_db" ref-columns="idclient" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="fk_credit_card_account1" table="credit_card" schema="" catalog="payments_db" columns="account_idaccount"/>
+      <exported-key name="fk_payment_account1" table="payment" schema="" catalog="payments_db" columns="account_idaccount"/>
+      <exported-key name="fk_refill_account1" table="refill" schema="" catalog="payments_db" columns="account_idaccount"/>
+      <index name="idaccount_UNIQUE" unique="true" columns="idaccount"/>
+      <index name="fk_account_client_idx" unique="false" columns="client_idclient"/>
+    </table>
+    <table name="client" schema="" catalog="payments_db" type="TABLE">
+      <column name="idclient" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="firstname" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="lastname" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
+      <column name="phonenumber" sqlType="VARCHAR" precision="13" scale="0" nullable="false" jdbcType="12"/>
+      <column name="is_admin" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6" def="MA=="/>
+      <primary-key name="PRIMARY" columns="idclient"/>
+      <exported-key name="fk_account_client" table="account" schema="" catalog="payments_db" columns="client_idclient"/>
+      <index name="idclient_UNIQUE" unique="true" columns="idclient"/>
+    </table>
+    <table name="credit_card" schema="" catalog="payments_db" type="TABLE">
+      <column name="account_idaccount" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="type" sqlType="VARCHAR" precision="13" scale="0" nullable="false" jdbcType="12"/>
+      <column name="cvv2_code" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="date_works" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="password" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="account_idaccount"/>
+      <foreign-key name="fk_credit_card_account1" columns="account_idaccount" ref-table="account" ref-schema="" ref-catalog="payments_db" ref-columns="idaccount" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="payment" schema="" catalog="payments_db" type="TABLE">
+      <column name="idpayment" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="account_idaccount" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="idaccountTO" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="amount" sqlType="DECIMAL" precision="12" scale="2" nullable="false" jdbcType="3"/>
+      <column name="date" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <primary-key name="PRIMARY" columns="idpayment"/>
+      <foreign-key name="fk_payment_account1" columns="account_idaccount" ref-table="account" ref-schema="" ref-catalog="payments_db" ref-columns="idaccount" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="idpayment_UNIQUE" unique="true" columns="idpayment"/>
+      <index name="fk_payment_account1_idx" unique="false" columns="account_idaccount"/>
+    </table>
+    <table name="refill" schema="" catalog="payments_db" type="TABLE">
+      <column name="idrefill" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="account_idaccount" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="amount" sqlType="DECIMAL" precision="12" scale="2" nullable="false" jdbcType="3"/>
+      <column name="date" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <primary-key name="PRIMARY" columns="idrefill"/>
+      <foreign-key name="fk_refill_account1" columns="account_idaccount" ref-table="account" ref-schema="" ref-catalog="payments_db" ref-columns="idaccount" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="idrefill_UNIQUE" unique="true" columns="idrefill"/>
+      <index name="fk_refill_account1_idx" unique="false" columns="account_idaccount"/>
+    </table>
+  </data-source>
+</component>
